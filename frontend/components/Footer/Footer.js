@@ -9,7 +9,7 @@ const Footer = () => {
             justifyContent="center"
             alignItems="center"
         >
-            <Text>All rights reserved &copy; {new Date().getFullYear()}</Text>
+            <Text>All rights reserved &copy; RoDec {new Date().getFullYear()}</Text>
         </Flex>
     )
 }

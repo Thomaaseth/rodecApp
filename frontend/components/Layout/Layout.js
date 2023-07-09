@@ -1,7 +1,7 @@
 "use client"
-import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import { Flex } from '@chakra-ui/react'
+import Navbar from '../Navbar/Navbar'
 
 const Layout = ({ children }) => {
     return (
@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
             h="100vh"
             justifyContent="center"
         >
-            <Header />
+            <Navbar />
             <Flex
                 grow="1"
                 p="2rem"
