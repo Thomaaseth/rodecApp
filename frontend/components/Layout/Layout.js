@@ -1,7 +1,7 @@
 "use client"
 import Footer from '../Footer/Footer'
-import { Flex } from '@chakra-ui/react'
 import Navbar from '../Navbar/Navbar'
+import { Flex } from '@chakra-ui/react'
 
 const Layout = ({ children }) => {
     return (

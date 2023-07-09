@@ -1,16 +1,23 @@
 "use client"
-import { Flex, Text } from '@chakra-ui/react'
+import { Text, Box, Container, useColorModeValue, Stack } from '@chakra-ui/react'
 import React from 'react'
 
 const Footer = () => {
     return (
-        <Flex
-            p="2rem"
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Text>All rights reserved &copy; RoDec {new Date().getFullYear()}</Text>
-        </Flex>
+        <Box
+            bg={useColorModeValue('gray.50', 'gray.900')}
+            color={useColorModeValue('gray.700', 'gray.200')}>
+            <Container
+                as={Stack}
+                maxW={'6xl'}
+                py={4}
+                direction={{ base: 'column', md: 'row' }}
+                spacing={4}
+                justify={'center'}
+                align={'center'}>
+                <Text>All rights reserved &copy; RoDec {new Date().getFullYear()}</Text>
+            </Container>
+        </Box>
     )
 }
 
