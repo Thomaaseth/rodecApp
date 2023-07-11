@@ -12,9 +12,6 @@ const Navbar = () => {
                 <Flex>
                     <Text fontSize="lg" fontWeight="bold">RoDec</Text>
                     <Stack direction={'row'} spacing={4} marginLeft={4}>
-                        <NextLink href="/">
-                            <Link fontWeight="bold" fontSize="lg">Home</Link>
-                        </NextLink>
                         <NextLink href="/actions">
                             <Link fontWeight="bold" fontSize="lg">Nos actions</Link>
                         </NextLink>
@@ -23,6 +20,9 @@ const Navbar = () => {
                         </NextLink>
                         <NextLink href="/marketplace">
                             <Link fontWeight="bold" fontSize="lg">Marketplace NFT</Link>
+                        </NextLink>
+                        <NextLink href="/">
+                            <Link fontWeight="bold" fontSize="lg">Mon compte</Link>
                         </NextLink>
                     </Stack>
                 </Flex>
