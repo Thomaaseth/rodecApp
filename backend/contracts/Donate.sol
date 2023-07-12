@@ -7,15 +7,20 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+/// @title Donation Contract
+/// @notice A contract for making donations and minting associated NFTs
+/// @dev Utilizes OpenZeppelin for secure, standardized functionality
 contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _donationIds;
 
+    /// @notice The details of a specific donation
     struct Donation {
         uint256 amount;
         uint256 timestamp;
     }
 
+    /// @notice Mapping from a donation ID to the specific details of that donation
     mapping(uint256 => Donation) public donations;
 
     event NewDonation(
@@ -28,8 +33,14 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
     uint256 private _price = 50000000000000;
     string public baseURI;
 
-    constructor() ERC721("RoDec", "RDC") {}
+    using Strings for uint;
 
+    constructor(string memory _baseURI) ERC721("RoDec", "RDC") {
+        baseURI = _baseURI;
+    }
+
+    /// @notice Make a donation and mint an associated NFT
+    /// @dev Donor must send enough Ether to cover the price of the donation
     function donate() external payable {
         require(msg.value >= _price, "Amount needs to be superior to 0.00005");
 
@@ -43,26 +54,45 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
         emit NewDonation(msg.sender, newDonationId, msg.value, block.timestamp);
     }
 
-    function setBaseURI(string memory _URI) external onlyOwner {
-        baseURI = _URI;
+    /// @notice Set the base URI for all token IDs
+    function setBaseURI(string memory _baseURI) external onlyOwner {
+        baseURI = _baseURI;
     }
 
-    function _baseURI() internal view override(ERC721) returns (string memory) {
+    function _getBaseURI()
+        internal
+        view
+        override(ERC721)
+        returns (string memory)
+    {
         return baseURI;
     }
 
-    function setPrice(uint _newPrice) external onlyOwner {
-        price = _newPrice;
+    /// @notice Get the URI for a specific token ID
+    function tokenURI(
+        uint _tokenId
+    ) public view virtual override(ERC721A) returns (string memory) {
+        require(_exists(_tokenId), "URI query for nonexistent token");
+
+        return string(abi.encodePacked(baseURI, _tokenId.toString(), ".json"));
     }
 
+    /// @notice Set the price for making a donation
+    function setPrice(uint _newPrice) external onlyOwner {
+        _price = _newPrice;
+    }
+
+    /// @notice Get the current price for making a donation
     function getPrice() public view returns (uint256) {
         return _price;
     }
 
+    /// @notice Get the total number of donations made so far
     function nbDonationsTotal() external view returns (uint256) {
         return _donationIds.current();
     }
 
+    /// @notice Get the details for a specific donation
     function getDonationDetails(
         uint256 donationId
     ) public view returns (uint256, uint256) {
@@ -74,6 +104,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
         return (donation.amount, donation.timestamp);
     }
 
+    /// @notice Get the IDs of all donations made by a specific address
     function walletOfOwner(
         address _owner
     ) public view returns (uint256[] memory) {
@@ -85,6 +116,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
         return donationsId;
     }
 
+    /// @notice Withdraw all Ether from the contract
     function withdraw() external onlyOwner nonReentrant {
         (bool success, ) = msg.sender.call{value: address(this).balance}("");
         require(success, "Withdrawal failed");
