@@ -125,7 +125,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
         uint256 tokenId,
         uint256 batchSize
     ) internal override(ERC721, ERC721Enumerable) {
-        require(from == address(this), "Transfer not allowed");
+        require(from == address(0), "Transfer not allowed");
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
