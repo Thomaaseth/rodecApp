@@ -26,6 +26,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
 
     // Mapping from donationId to Donation struct
     mapping(uint256 => Donation) public donations;
+    mapping(uint256 => bool) public donationExists;
 
     /**
      * @dev Event emitted when a new donation is made
@@ -57,6 +58,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
             amount: msg.value,
             timestamp: block.timestamp
         });
+        donationExists[newDonationId] = true;
         _donationIds.increment();
 
         emit NewDonation(msg.sender, newDonationId, msg.value, block.timestamp);
@@ -89,7 +91,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
     function getDonationDetails(
         uint256 donationId
     ) public view returns (uint256, uint256) {
-        require(_exists(donationId), "Donation does not exist");
+        require(donationExists[donationId], "Donation does not exist");
         Donation memory donation = donations[donationId];
         return (donation.amount, donation.timestamp);
     }

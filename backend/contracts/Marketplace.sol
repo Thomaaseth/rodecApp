@@ -15,7 +15,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     address payable private _marketOwner;
     uint256 public listFee = 0.005 ether;
 
-    mapping(uint256 => NFT) private _idNFT;
+    mapping(uint256 => NFT) public _idNFT;
     uint256[] private _allNfts;
 
     struct NFT {

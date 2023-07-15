@@ -10,7 +10,6 @@ describe("Donate unit tests", function () {
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
     let Donate = await ethers.getContractFactory("Donate");
     donate = await Donate.deploy();
-    // await donate.deployed();
   });
 
   /// Deployment test
@@ -51,15 +50,27 @@ describe("Donate unit tests", function () {
       expect(await donate.nbDonationsTotal()).to.equal(2);
     });
 
-    it('Should correctly store donation details', async function () {
+    it("Should store donation details correctly", async function () {
       await donate.setPrice(100);
-      const tx = await donate.connect(addr1).donate({ value: ethers.parseEther('1') });
+      const tx = await donate.connect(addr1).donate({ value: 100 });
       const receipt = await tx.wait();
-      const donationId = receipt.events[0].args[1].toNumber();
-      const [donationAmount, donationTime] = await donate.getDonationDetails(donationId);
+      const block = await ethers.provider.getBlock(receipt.blockNumber);
 
-      expect(donationAmount).to.equal(ethers.parseEther('1'));
-      expect(donationTime).to.be.at.least(startTime);
+      expect(await donate.donationExists(0)).to.be.true;
+
+      const [donationAmount, donationTime] = await donate.getDonationDetails(0);
+      expect(donationAmount).to.equal(100);
+      expect(donationTime).to.equal(block.timestamp);
+    });
+
+
+    it("Should return the correct donation IDs for a given address", async function () {
+      await donate.setPrice(100);
+      await donate.connect(addr1).donate({ value: 100 });
+      await donate.connect(addr1).donate({ value: 200 });
+
+      const donationIds = await donate.walletOfOwner(addr1.address);
+      expect(donationIds).to.deep.equal([0, 1]);
     });
 
 

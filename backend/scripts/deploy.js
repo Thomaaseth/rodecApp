@@ -16,6 +16,15 @@ async function main() {
   console.log(
     `Donate deployed to ${donate.address}`
   );
+
+  const Marketplace = await hre.ethers.getContractFactory("Marketplace");
+  const marketplace = await Marketplace.deploy();
+
+  await marketplace.deployed();
+
+  console.log(
+    `Donate deployed to ${Marketplace.address}`
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
