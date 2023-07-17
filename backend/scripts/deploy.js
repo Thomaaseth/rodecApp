@@ -5,26 +5,35 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+const fs = require('fs');
 
 async function main() {
 
-  const Donate = await hre.ethers.getContractFactory("Donate");
-  const donate = await Donate.deploy();
+  const donate = await hre.ethers.deployContract("Donate");
+  // const donate = await Donate.deploy();
+  await donate.waitForDeployment();
 
-  await donate.deployed();
+  // await donate.deployed();
+
+  // const donateData = {
+  //   address: donate.address,
+  //   abi: JSON.parse(donate.interface.format('json')),
+  // };
+
+  // fs.writeFileSync('donateData.json', JSON.stringify(donateData));
 
   console.log(
-    `Donate deployed to ${donate.address}`
+    `Donate deployed to ${donate.target}`
   );
 
-  const Marketplace = await hre.ethers.getContractFactory("Marketplace");
-  const marketplace = await Marketplace.deploy();
+  // const Marketplace = await hre.ethers.getContractFactory("Marketplace");
+  // const marketplace = await Marketplace.deploy();
 
-  await marketplace.deployed();
+  // await marketplace.deployed();
 
-  console.log(
-    `Donate deployed to ${Marketplace.address}`
-  );
+  // console.log(
+  //   `Donate deployed to ${Marketplace.address}`
+  // );
 }
 
 // We recommend this pattern to be able to use async/await everywhere

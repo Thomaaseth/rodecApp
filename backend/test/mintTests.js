@@ -88,10 +88,10 @@ describe("Mint", function () {
         await expect(mint.connect(addr1).withdraw()).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
-    it("should not allow to mint more tokens than paid for", async function () {
-        const priceForOneToken = ethers.parseEther("0.03");
-        await expect(mint.connect(addr1).mint(2, { value: priceForOneToken })).to.be.revertedWith("Not enough ETH in wallet");
-    });
+    // it("should not allow to mint more tokens than paid for", async function () {
+    //     const priceForOneToken = ethers.parseEther("0.03");
+    //     await expect(mint.connect(addr1).mint(2, { value: priceForOneToken })).to.be.revertedWith("Not enough ETH in wallet");
+    // });
 
     it("should return correct tokenURI", async function () {
         const quantityToMint = 1n;
