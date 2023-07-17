@@ -6,6 +6,12 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
+/**
+ * @title Marketplace contract
+ * @dev Implements a contract for a marketplace for trading ERC721 tokens.
+ * @author Thomas for Alyra
+ */
+
 contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _nbNftSold;
@@ -18,6 +24,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     mapping(uint256 => NFT) public _idNFT;
     uint256[] private _allNfts;
 
+    /// @notice Struct for a NFT.
     struct NFT {
         address nftContract;
         uint256 tokenId;
@@ -27,6 +34,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         bool listed;
     }
 
+    /// @notice Event for when a NFT is listed.
     event NFTListed(
         address nftContract,
         uint256 tokenId,
@@ -35,6 +43,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         uint256 price
     );
 
+    /// @notice Event for when a NFT is sold.
     event NFTSold(
         address nftContract,
         uint256 tokenId,
@@ -43,12 +52,15 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         uint256 price
     );
 
+    /// @notice Contract constructor.
     constructor() ERC721("RoDecNFT", "RDNFT") {
         _marketOwner = payable(msg.sender);
     }
 
-    // List NFTs to sell
-
+    /// @notice Lists a NFT to sell.
+    /// @param _nftContract The contract of the NFT.
+    /// @param _tokenId The ID of the NFT.
+    /// @param _price The price of the NFT.
     function listNft(
         address _nftContract,
         uint256 _tokenId,
@@ -80,8 +92,9 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         );
     }
 
-    // Buy an NFT
-
+    /// @notice Buys a NFT.
+    /// @param _nftContract The contract of the NFT.
+    /// @param _tokenId The ID of the NFT.
     function buyNft(
         address _nftContract,
         uint256 _tokenId
@@ -99,6 +112,10 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         payable(nft.seller).transfer(msg.value);
     }
 
+    /// @notice Sell a NFT.
+    /// @param _nftContract The contract of the NFT.
+    /// @param _tokenId The ID of the NFT.
+    /// @param _price The price of the NFT.
     function sellNft(
         address _nftContract,
         uint256 _tokenId,
@@ -129,6 +146,8 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         );
     }
 
+    /// @notice Gets all listed NFTs.
+    /// @return An array of NFT structs.
     function getListedNfts() public view returns (NFT[] memory) {
         uint256 totalNfts = _allNfts.length;
         uint256 listedNftCount = totalNfts - _nbNftSold.current();
@@ -145,6 +164,8 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         return nfts;
     }
 
+    /// @notice Gets all owned NFTs of the caller.
+    /// @return An array of NFT structs.
     function getMyNfts() external view returns (NFT[] memory) {
         uint256 totalNfts = _allNfts.length;
         uint myNftNb = 0;
@@ -168,6 +189,8 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         return nfts;
     }
 
+    /// @notice Gets all listed NFTs of the caller.
+    /// @return An array of NFT structs.
     function getMyListedNfts() external view returns (NFT[] memory) {
         uint256 totalNfts = _allNfts.length;
         uint myListedNftNb = 0;
