@@ -1,8 +1,8 @@
 "use client"
-import React from 'react'
 import { Box, Link, Flex, Text, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link'  // Rename to avoid name clash with Chakra UI's Link component
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 
 const Navbar = () => {
 
@@ -29,7 +29,6 @@ const Navbar = () => {
                 <ConnectButton />
             </Flex>
         </Box>
-
     )
 }
 

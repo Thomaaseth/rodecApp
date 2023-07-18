@@ -16,6 +16,7 @@ import {
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import Layout from "@/components/Layout/Layout";
 
 const { chains, publicClient } = configureChains(
   [hardhat, polygonMumbai, goerli, sepolia],
@@ -43,17 +44,22 @@ const wagmiConfig = createConfig({
 // }
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
       <body>
+
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains}>
             <ChakraProvider>
-              {children}
+              <Layout>
+                {children}
+              </Layout>
             </ChakraProvider>
           </RainbowKitProvider>
         </WagmiConfig>
+
       </body>
-    </html>
+    </html >
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { Box, Flex, Text } from '@chakra-ui/react'
-import Layout from '@/components/Layout/Layout'
+import Layout from '@components/Layout/Layout'
 // import { useAccount } from 'wagmi'
 
 const Actions = () => {

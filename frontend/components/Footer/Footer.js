@@ -1,6 +1,5 @@
 "use client"
 import { Text, Box, Container, useColorModeValue, Stack } from '@chakra-ui/react'
-import React from 'react'
 
 const Footer = () => {
     return (
