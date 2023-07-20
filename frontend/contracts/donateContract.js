@@ -1,3 +1,5 @@
+"use client"
+
 import { ethers } from 'ethers';
 import donate from './donate.json';
 

@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from 'react';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { ethers } from 'ethers';
