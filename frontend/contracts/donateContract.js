@@ -13,6 +13,11 @@ export function getContractInstanceWithSigner(ethersProvider, signer) {
     return new ethers.Contract(contractAddress, contractABI, ethersProvider).connect(signer);
 }
 
+export async function isOwner(contractInstance, accountAddress) {
+    const ownerAddress = await contractInstance.owner();
+    return ethers.getAddress(accountAddress) === ethers.getAddress(ownerAddress);
+}
+
 export async function listenForNewDonations(donateContract) {
     donateContract.on('NewDonation', (sender, donationId, amount, timestamp, event) => {
         console.log(`New donation received from ${sender} with ID ${donationId}`);
