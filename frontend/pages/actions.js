@@ -8,14 +8,10 @@ const Actions = () => {
 
     // const { address } = useAccount();
     return (
-        <>
-            <Layout>
-                <Box p={4}>
-                    <Text fontSize="xl">Lorem Ipsum</Text>
-                    {/* Put the content of your page here */}
-                </Box>
-            </Layout>
-        </>
+        <Box p={4}>
+            <Text fontSize="xl">Lorem Ipsum</Text>
+            {/* Put the content of your page here */}
+        </Box>
     )
 
 }

@@ -7,7 +7,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 const Navbar = () => {
 
     return (
-        <Box bg="teal.500" px={4} color="white">
+        <Box bg="teal.500" px={4} color="white" width="100%">
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                 <Flex>
                     <Text fontSize="lg" fontWeight="bold">RoDec</Text>
@@ -15,13 +15,13 @@ const Navbar = () => {
                         <NextLink href="/actions">
                             <Link fontWeight="bold" fontSize="lg">Nos actions</Link>
                         </NextLink>
-                        <NextLink href="/donner">
+                        <NextLink href="/donate">
                             <Link fontWeight="bold" fontSize="lg">Faire un don</Link>
                         </NextLink>
                         <NextLink href="/marketplace">
                             <Link fontWeight="bold" fontSize="lg">Marketplace NFT</Link>
                         </NextLink>
-                        <NextLink href="/">
+                        <NextLink href="/profile">
                             <Link fontWeight="bold" fontSize="lg">Mon compte</Link>
                         </NextLink>
                     </Stack>

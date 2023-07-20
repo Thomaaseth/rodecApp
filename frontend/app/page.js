@@ -7,10 +7,8 @@ import Layout from '@/components/Layout/Layout'
 
 export default function Home() {
   return (
-    <Layout>
-      <Box p={4}>
-        <Text fontSize="xl">Welcome to Home Page!</Text>
-      </Box>
-    </Layout>
+    <Box p={4}>
+      <Text fontSize="xl">Welcome to Home Page!</Text>
+    </Box>
   )
 }

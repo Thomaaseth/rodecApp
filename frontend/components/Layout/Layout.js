@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
         <Flex
             direction="column"
             h="100vh"
-            justifyContent="center"
+            justifyContent="space-between"
         >
             <Navbar />
             <Flex

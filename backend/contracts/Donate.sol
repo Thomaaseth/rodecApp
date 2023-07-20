@@ -5,14 +5,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title Donate contract
  * @dev Implements donations in exchange for ERC721 tokens.
- * @author Thomas for Alyra
+ * @author Thomas for Alyra Certifaction
  */
-contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
+contract Donate is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
 
     // Counter for donation IDs
@@ -113,7 +112,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable, ReentrancyGuard {
     /**
      * @dev Allows the owner to withdraw all funds from the contract
      */
-    function withdraw() external payable onlyOwner {
+    function withdraw() external onlyOwner {
         (bool success, ) = msg.sender.call{value: address(this).balance}("");
         require(success, "Withdrawal failed");
     }
