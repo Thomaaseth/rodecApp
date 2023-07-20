@@ -21,7 +21,7 @@ const Navbar = () => {
                         <NextLink href="/marketplace">
                             <Link fontWeight="bold" fontSize="lg">Marketplace NFT</Link>
                         </NextLink>
-                        <NextLink href="/profile">
+                        <NextLink href="/myProfile">
                             <Link fontWeight="bold" fontSize="lg">Mon compte</Link>
                         </NextLink>
                     </Stack>
