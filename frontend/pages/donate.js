@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
-import { ethers } from 'ethers';
+import { ethers } from "ethers";
 import { useAccount } from 'wagmi';
-import { donate, getContractInstanceWithSigner } from '../contracts/donateContract'
+import { makeDonation, getContractInstanceWithSigner } from '../contracts/donateContract'
 import { Alert, AlertIcon } from '@chakra-ui/react'
 
 function DonatePage() {
@@ -14,12 +14,12 @@ function DonatePage() {
 
     const handleDonate = async () => {
         if (account.connected) {
-            const provider = new ethers.providers.Web3Provider(account.provider);
+            const provider = new ethers.BrowserProvider(account.provider);
             const contractWithSigner = getContractInstanceWithSigner(provider);
 
             try {
                 setTransactionStatus('Pending...');
-                const tx = await donate(contractWithSigner, donationAmount);
+                const tx = await makeDonation(contractWithSigner, donationAmount);
                 setTransactionStatus('Success');
                 setDonationAmount('');
             } catch (err) {

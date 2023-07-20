@@ -3,9 +3,9 @@ import { Box, Link, Flex, Text, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link'  // Rename to avoid name clash with Chakra UI's Link component
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
-import { ethers } from 'ethers';
+import { ethers } from "ethers";
 import { getContractInstanceWithSigner, isOwner } from '@/contracts/donateContract';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
 
@@ -14,8 +14,10 @@ const Navbar = () => {
 
     useEffect(() => {
         const checkOwner = async () => {
-            if (account.connected) {
-                const provider = new ethers.providers.Web3Provider(account.provider);
+            if (account && account.connected) {
+                console.log(account.provider); // Add this line
+
+                const provider = new ethers.BrowserProvider(account.provider);
                 const contractWithSigner = getContractInstanceWithSigner(provider);
                 const ownerStatus = await isOwner(contractWithSigner);
                 setIsOwnerAccount(ownerStatus);

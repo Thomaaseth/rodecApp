@@ -71,7 +71,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable {
     }
 
     /**
-     * @dev Allows the owner to set a new donation price
+     * @dev Allows the owner to set a new min donation price
      */
     function setPrice(uint _newPrice) external onlyOwner {
         _price = _newPrice;

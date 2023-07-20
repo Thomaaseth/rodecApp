@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { ethers } from "ethers";
 import { Box, Button, Text, Alert, AlertIcon, Input } from '@chakra-ui/react';
 import { useAccount } from 'wagmi';
 import {
@@ -10,7 +10,6 @@ import {
     checkOwner,
     getBalance,
     changeMinDonationLimit,
-    toggleDonationsStatus
 } from '../contracts/donateContract';
 
 function AdminPage() {
@@ -22,7 +21,7 @@ function AdminPage() {
     useEffect(() => {
         const checkAdminStatus = async () => {
             if (account.connected) {
-                const provider = new ethers.providers.Web3Provider(account.provider);
+                const provider = new ethers.BrowserProvider(account.provider);
                 const contractWithSigner = getContractInstanceWithSigner(provider);
 
                 const adminStatus = await checkOwner(contractWithSigner, account.address);
@@ -40,7 +39,7 @@ function AdminPage() {
 
     const handleWithdraw = async () => {
         if (isAdmin) {
-            const provider = new ethers.providers.Web3Provider(account.provider);
+            const provider = new ethers.BrowserProvider(account.provider);
             const contractWithSigner = getContractInstanceWithSigner(provider);
 
             try {
@@ -54,17 +53,9 @@ function AdminPage() {
         }
     };
 
-    const handleToggleDonations = async () => {
-        if (isAdmin) {
-            const provider = new ethers.providers.Web3Provider(account.provider);
-            const contractWithSigner = getContractInstanceWithSigner(provider);
-            await toggleDonationsStatus(contractWithSigner);
-        }
-    };
-
     const handleChangeMinDonation = async () => {
         if (isAdmin) {
-            const provider = new ethers.providers.Web3Provider(account.provider);
+            const provider = new ethers.BrowserProvider(account.provider);
             const contractWithSigner = getContractInstanceWithSigner(provider);
             await changeMinDonationLimit(contractWithSigner, newMinDonationLimit);
         }
@@ -89,10 +80,9 @@ function AdminPage() {
             <Button mt={4} onClick={handleWithdraw} disabled={!account.connected || !isAdmin}>
                 Withdraw Funds
             </Button>
-            <Button mt={4} onClick={handleToggleDonations} disabled={!account.connected || !isAdmin}>
-                Toggle Donations
-            </Button>
             <Box mt={4}>
+                <Text fontSize="md">Changer le minimum de donation en ETH</Text>
+
                 <Input
                     value={newMinDonationLimit}
                     onChange={(e) => setNewMinDonationLimit(e.target.value)}

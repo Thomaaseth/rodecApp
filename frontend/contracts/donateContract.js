@@ -1,11 +1,11 @@
 "use client"
 
 import { ethers } from 'ethers';
-import donate from './donate.json';
+import donateData from './donate.json';
 
 
-export const contractABI = donate.contracts.Donate.abi;
-export const contractAddress = donate.contracts.Donate.address;
+export const contractABI = donateData.contracts.Donate.abi;
+export const contractAddress = donateData.contracts.Donate.address;
 
 export function getContractInstance(ethersProvider) {
     return new ethers.Contract(contractAddress, contractABI, ethersProvider);
@@ -30,7 +30,7 @@ export async function listenForNewDonations(donateContract) {
 }
 
 
-export async function donate(donateContractWithSigner, amount) {
+export async function makeDonation(donateContractWithSigner, amount) {
     try {
         const tx = await donateContractWithSigner.donate({ value: ethers.parseEther(amount) });
         const receipt = await tx.wait();

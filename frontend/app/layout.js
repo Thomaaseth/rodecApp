@@ -9,6 +9,7 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
+  localhost,
   hardhat,
   polygonMumbai,
   goerli,
@@ -19,7 +20,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import Layout from "@/components/Layout/Layout";
 
 const { chains, publicClient } = configureChains(
-  [hardhat, polygonMumbai, goerli, sepolia],
+  [localhost, hardhat, polygonMumbai, goerli, sepolia],
   [
     alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     publicProvider()

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
-import { ethers } from 'ethers';
+import { ethers } from "ethers";
 import { useAccount } from 'wagmi';
 import { getDonationsOwner, getDonationDetails, getContractInstance } from '../contracts/donateContract'
 import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react'
@@ -16,7 +16,7 @@ function MyProfilePage() {
 
     const fetchDonations = async () => {
         if (account.connected) {
-            const provider = new ethers.providers.Web3Provider(account.provider);
+            const provider = new ethers.BrowserProvider(account.provider);
             const contractInstance = getContractInstance(provider);
             const userDonations = await getDonationsOwner(contractInstance, account.address);
             setDonations(userDonations);
@@ -35,7 +35,7 @@ function MyProfilePage() {
         setDonationId(newDonationId);
 
         if (newDonationId !== '') {
-            const provider = new ethers.providers.Web3Provider(account.provider);
+            const provider = new ethers.BrowserProvider(account.provider);
             const contractInstance = getContractInstance(provider);
             const donationDetails = await getDonationDetails(contractInstance, newDonationId);
             setSelectedDonation(donationDetails);
