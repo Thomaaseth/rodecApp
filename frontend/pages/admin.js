@@ -13,30 +13,35 @@ import {
 } from '../contracts/donateContract';
 
 function AdminPage() {
-    const { address } = useAccount();
-    console.log('AdminPage - address:', address);
-
     const [isAdmin, setIsAdmin] = useState(false);
     const [contractBalance, setContractBalance] = useState('0');
     const [newMinDonationLimit, setNewMinDonationLimit] = useState('');
+    const { address } = useAccount();
+
 
     useEffect(() => {
         const checkAdminStatus = async () => {
-            if (address && address.connected) {
-                const provider = new ethers.BrowserProvider(address.provider);
-                const contractWithSigner = getContractInstanceWithSigner(provider);
+            try {
+                if (address && address.connected) {
+                    const provider = new ethers.BrowserProvider(address.provider);
+                    const contractWithSigner = getContractInstanceWithSigner(provider);
 
-                const adminStatus = await isOwner(contractWithSigner, address.address);
-                setIsAdmin(adminStatus);
-                if (adminStatus) {
-                    const balance = await getBalance(contractWithSigner);
-                    setContractBalance(ethers.formatEther(balance));
+                    const adminStatus = await isOwner(contractWithSigner, address.address);
+                    setIsAdmin(adminStatus);
+                    if (adminStatus) {
+                        const balance = await getBalance(contractWithSigner);
+                        setContractBalance(ethers.formatEther(balance));
+                    }
                 }
+            } catch (error) {
+                console.error("Error while checking admin status:", error);
             }
         };
 
         checkAdminStatus();
-    }, [address]);
+    }, [address?.connected, address]);
+
+
 
     const handleWithdraw = async () => {
         if (isAdmin) {
@@ -65,20 +70,20 @@ function AdminPage() {
     return (
         <Box p={4}>
             <Text fontSize="xl">Admin Page</Text>
-            {!address.connected && (
+            {address && !address.connected ? (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
                     Connectez vous au bon network.
                 </Alert>
-            )}
-            {!isAdmin && (
+            ) : null}
+            {!isAdmin ? (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
                     Seul l'owner du contract peut interagir.
                 </Alert>
-            )}
+            ) : null}
             <Text fontSize="md">Contract Balance: {contractBalance} ETH</Text>
-            <Button mt={4} onClick={handleWithdraw} disabled={!address.connected || !isAdmin}>
+            <Button mt={4} onClick={handleWithdraw} disabled={!address?.connected || !isAdmin}>
                 Retirer les fonds.
             </Button>
             <Box mt={4}>
@@ -89,7 +94,7 @@ function AdminPage() {
                     placeholder="Entrez nouveau minimum de donation"
                     mb={2}
                 />
-                <Button onClick={handleChangeMinDonation} disabled={!address.connected || !isAdmin}>
+                <Button onClick={handleChangeMinDonation} disabled={!address?.connected || !isAdmin}>
                     Valider
                 </Button>
             </Box>
