@@ -10,11 +10,11 @@ import { Alert, AlertIcon } from '@chakra-ui/react'
 function DonatePage() {
     const [donationAmount, setDonationAmount] = useState('');
     const [transactionStatus, setTransactionStatus] = useState(null);
-    const { account } = useAccount();
+    const { address } = useAccount();
 
     const handleDonate = async () => {
-        if (account.connected) {
-            const provider = new ethers.BrowserProvider(account.provider);
+        if (address && address.connected) {
+            const provider = new ethers.BrowserProvider(address.provider);
             const contractWithSigner = getContractInstanceWithSigner(provider);
 
             try {
@@ -32,7 +32,7 @@ function DonatePage() {
     return (
         <Box p={4}>
             <Text fontSize="xl">Make a Donation</Text>
-            {!account.connected && (
+            {address && !address.connected && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
                     Please connect your Wallet.
@@ -44,7 +44,7 @@ function DonatePage() {
                 placeholder="Enter donation amount in ETH"
                 mb={4}
             />
-            <Button onClick={handleDonate} disabled={!account.connected}>Donate</Button>
+            <Button onClick={handleDonate} disabled={address && !address.connected}>Donate</Button>
             {transactionStatus && (
                 <Text mt={4}>{transactionStatus}</Text>
             )}

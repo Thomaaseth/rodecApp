@@ -1,6 +1,6 @@
 "use client"
 import { Box, Link, Flex, Text, Stack } from '@chakra-ui/react';
-import NextLink from 'next/link'  // Rename to avoid name clash with Chakra UI's Link component
+import NextLink from 'next/link'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { ethers } from "ethers";
@@ -9,22 +9,22 @@ import { useEffect, useState } from 'react';
 
 const Navbar = () => {
 
-    const { account } = useAccount();
+    const { address } = useAccount();
     const [isOwnerAccount, setIsOwnerAccount] = useState(false);
 
     useEffect(() => {
         const checkOwner = async () => {
-            if (account && account.connected) {
-                console.log(account.provider); // Add this line
+            if (address && address.connected) {
+                console.log(address.provider);
 
-                const provider = new ethers.BrowserProvider(account.provider);
+                const provider = new ethers.BrowserProvider(address.provider);
                 const contractWithSigner = getContractInstanceWithSigner(provider);
                 const ownerStatus = await isOwner(contractWithSigner);
                 setIsOwnerAccount(ownerStatus);
             }
         }
         checkOwner();
-    }, [account]);
+    }, [address]);
 
     return (
         <Box bg="teal.500" px={4} color="white" width="100%">
@@ -37,9 +37,6 @@ const Navbar = () => {
                         </NextLink>
                         <NextLink href="/donate">
                             <Link fontWeight="bold" fontSize="lg">Faire un don</Link>
-                        </NextLink>
-                        <NextLink href="/marketplace">
-                            <Link fontWeight="bold" fontSize="lg">Marketplace NFT</Link>
                         </NextLink>
                         <NextLink href="/myProfile">
                             <Link fontWeight="bold" fontSize="lg">Mon compte</Link>

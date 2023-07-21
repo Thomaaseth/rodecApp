@@ -6,27 +6,28 @@ import { Box, Button, Text, Alert, AlertIcon, Input } from '@chakra-ui/react';
 import { useAccount } from 'wagmi';
 import {
     getContractInstanceWithSigner,
-    withdrawFunds,
-    checkOwner,
+    withdraw,
+    isOwner,
     getBalance,
-    changeMinDonationLimit,
+    setPrice
 } from '../contracts/donateContract';
 
 function AdminPage() {
-    const { account } = useAccount();
+    const { address } = useAccount();
+    console.log('AdminPage - address:', address);
+
     const [isAdmin, setIsAdmin] = useState(false);
     const [contractBalance, setContractBalance] = useState('0');
     const [newMinDonationLimit, setNewMinDonationLimit] = useState('');
 
     useEffect(() => {
         const checkAdminStatus = async () => {
-            if (account.connected) {
-                const provider = new ethers.BrowserProvider(account.provider);
+            if (address && address.connected) {
+                const provider = new ethers.BrowserProvider(address.provider);
                 const contractWithSigner = getContractInstanceWithSigner(provider);
 
-                const adminStatus = await checkOwner(contractWithSigner, account.address);
+                const adminStatus = await isOwner(contractWithSigner, address.address); // Updated to isOwner
                 setIsAdmin(adminStatus);
-
                 if (adminStatus) {
                     const balance = await getBalance(contractWithSigner);
                     setContractBalance(ethers.formatEther(balance));
@@ -35,15 +36,15 @@ function AdminPage() {
         };
 
         checkAdminStatus();
-    }, [account]);
+    }, [address]);
 
     const handleWithdraw = async () => {
         if (isAdmin) {
-            const provider = new ethers.BrowserProvider(account.provider);
+            const provider = new ethers.BrowserProvider(address.provider);
             const contractWithSigner = getContractInstanceWithSigner(provider);
 
             try {
-                const tx = await withdrawFunds(contractWithSigner);
+                const tx = await withdraw(contractWithSigner);
                 console.log('Transaction successful. Hash:', tx.hash);
                 const balance = await getBalance(contractWithSigner);
                 setContractBalance(ethers.formatEther(balance));
@@ -55,16 +56,16 @@ function AdminPage() {
 
     const handleChangeMinDonation = async () => {
         if (isAdmin) {
-            const provider = new ethers.BrowserProvider(account.provider);
+            const provider = new ethers.BrowserProvider(address.provider);
             const contractWithSigner = getContractInstanceWithSigner(provider);
-            await changeMinDonationLimit(contractWithSigner, newMinDonationLimit);
+            await setPrice(contractWithSigner, newMinDonationLimit);
         }
     };
 
     return (
         <Box p={4}>
             <Text fontSize="xl">Admin Page</Text>
-            {!account.connected && (
+            {!address.connected && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
                     Please connect your Wallet.
@@ -77,19 +78,18 @@ function AdminPage() {
                 </Alert>
             )}
             <Text fontSize="md">Contract Balance: {contractBalance} ETH</Text>
-            <Button mt={4} onClick={handleWithdraw} disabled={!account.connected || !isAdmin}>
+            <Button mt={4} onClick={handleWithdraw} disabled={!address.connected || !isAdmin}>
                 Withdraw Funds
             </Button>
             <Box mt={4}>
                 <Text fontSize="md">Changer le minimum de donation en ETH</Text>
-
                 <Input
                     value={newMinDonationLimit}
                     onChange={(e) => setNewMinDonationLimit(e.target.value)}
                     placeholder="Enter new minimum donation limit"
                     mb={2}
                 />
-                <Button onClick={handleChangeMinDonation} disabled={!account.connected || !isAdmin}>
+                <Button onClick={handleChangeMinDonation} disabled={!address.connected || !isAdmin}>
                     Change Min Donation Limit
                 </Button>
             </Box>

@@ -5,20 +5,22 @@ import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { ethers } from "ethers";
 import { useAccount } from 'wagmi';
 import { getDonationsOwner, getDonationDetails, getContractInstance } from '../contracts/donateContract'
-import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react'
+import { Alert, AlertIcon } from '@chakra-ui/react'
 
 function MyProfilePage() {
     const [donations, setDonations] = useState([]);
     const [totalDonated, setTotalDonated] = useState(0);
-    const [donationId, setDonationId] = useState(null);
+    const [donationId, setDonationId] = useState('');
     const [selectedDonation, setSelectedDonation] = useState(null);
-    const { account } = useAccount();
+    const { address } = useAccount();
+    console.log('MyProfilePage - address:', address);
+
 
     const fetchDonations = async () => {
-        if (account.connected) {
-            const provider = new ethers.BrowserProvider(account.provider);
+        if (address && address.connected) {
+            const provider = new ethers.BrowserProvider(address.provider);
             const contractInstance = getContractInstance(provider);
-            const userDonations = await getDonationsOwner(contractInstance, account.address);
+            const userDonations = await getDonationsOwner(contractInstance, address.address);
             setDonations(userDonations);
 
             let total = 0n;
@@ -26,6 +28,9 @@ function MyProfilePage() {
                 total += BigInt(donation.amount);
             }
             setTotalDonated(ethers.formatEther(total.toString()));
+        } else {
+            setDonations([]);
+            setTotalDonated(0);
         }
     }
 
@@ -35,7 +40,7 @@ function MyProfilePage() {
         setDonationId(newDonationId);
 
         if (newDonationId !== '') {
-            const provider = new ethers.BrowserProvider(account.provider);
+            const provider = new ethers.BrowserProvider(address.provider);
             const contractInstance = getContractInstance(provider);
             const donationDetails = await getDonationDetails(contractInstance, newDonationId);
             setSelectedDonation(donationDetails);
@@ -45,13 +50,17 @@ function MyProfilePage() {
     }
 
     useEffect(() => {
-        fetchDonations();
-    }, [account.connected]);
+        if (address && address.connected) {
+            console.log("MyProfilePage - address:", address);
+            fetchDonations();
+        }
+    }, [address?.connected, address]);
+
 
     return (
         <Box p={4}>
             <Text fontSize="xl">My Donations</Text>
-            {!account.connected && (
+            {address && !address.connected && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
                     Please connect your Wallet.
@@ -67,7 +76,7 @@ function MyProfilePage() {
             <Input
                 value={donationId}
                 onChange={handleDonationIdChange}
-                placeholder="Enter donation ID to view related informations."
+                placeholder="Entrez l'ID de votre donation pour obtenir des informations."
                 mb={4}
             />
             {selectedDonation && (

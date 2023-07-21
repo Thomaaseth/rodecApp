@@ -29,6 +29,16 @@ export async function listenForNewDonations(donateContract) {
     });
 }
 
+export async function getBalance(donateContract) {
+    try {
+        const balance = await donateContract.balance();
+        return balance;
+    } catch (err) {
+        console.log('Error in getBalance function:', err);
+        throw err;
+    }
+}
+
 
 export async function makeDonation(donateContractWithSigner, amount) {
     try {
