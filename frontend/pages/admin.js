@@ -26,7 +26,7 @@ function AdminPage() {
                 const provider = new ethers.BrowserProvider(address.provider);
                 const contractWithSigner = getContractInstanceWithSigner(provider);
 
-                const adminStatus = await isOwner(contractWithSigner, address.address); // Updated to isOwner
+                const adminStatus = await isOwner(contractWithSigner, address.address);
                 setIsAdmin(adminStatus);
                 if (adminStatus) {
                     const balance = await getBalance(contractWithSigner);
@@ -68,29 +68,29 @@ function AdminPage() {
             {!address.connected && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
-                    Please connect your Wallet.
+                    Connectez vous au bon network.
                 </Alert>
             )}
             {!isAdmin && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
-                    Only the contract owner can interact with this page.
+                    Seul l'owner du contract peut interagir.
                 </Alert>
             )}
             <Text fontSize="md">Contract Balance: {contractBalance} ETH</Text>
             <Button mt={4} onClick={handleWithdraw} disabled={!address.connected || !isAdmin}>
-                Withdraw Funds
+                Retirer les fonds.
             </Button>
             <Box mt={4}>
                 <Text fontSize="md">Changer le minimum de donation en ETH</Text>
                 <Input
                     value={newMinDonationLimit}
                     onChange={(e) => setNewMinDonationLimit(e.target.value)}
-                    placeholder="Enter new minimum donation limit"
+                    placeholder="Entrez nouveau minimum de donation"
                     mb={2}
                 />
                 <Button onClick={handleChangeMinDonation} disabled={!address.connected || !isAdmin}>
-                    Change Min Donation Limit
+                    Valider
                 </Button>
             </Box>
         </Box>

@@ -13,7 +13,6 @@ function MyProfilePage() {
     const [donationId, setDonationId] = useState('');
     const [selectedDonation, setSelectedDonation] = useState(null);
     const { address } = useAccount();
-    console.log('MyProfilePage - address:', address);
 
 
     const fetchDonations = async () => {
@@ -51,7 +50,6 @@ function MyProfilePage() {
 
     useEffect(() => {
         if (address && address.connected) {
-            console.log("MyProfilePage - address:", address);
             fetchDonations();
         }
     }, [address?.connected, address]);
@@ -59,14 +57,14 @@ function MyProfilePage() {
 
     return (
         <Box p={4}>
-            <Text fontSize="xl">My Donations</Text>
+            <Text fontSize="xl">Mes Donations</Text>
             {address && !address.connected && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
-                    Please connect your Wallet.
+                    Connectez vous au bon network.
                 </Alert>
             )}
-            <Text>Total donated: {totalDonated} ETH</Text>
+            <Text>Somme totale des donations: {totalDonated} ETH</Text>
             {donations.map((donation, index) => (
                 <Box key={index}>
                     <Text>Donation ID: {donation.id}</Text>

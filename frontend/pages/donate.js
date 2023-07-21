@@ -31,20 +31,20 @@ function DonatePage() {
 
     return (
         <Box p={4}>
-            <Text fontSize="xl">Make a Donation</Text>
+            <Text fontSize="xl">Faire une donation</Text>
             {address && !address.connected && (
                 <Alert status="warning" mt={4}>
                     <AlertIcon />
-                    Please connect your Wallet.
+                    Connectez vous au bon network.
                 </Alert>
             )}
             <Input
                 value={donationAmount}
                 onChange={(e) => setDonationAmount(e.target.value)}
-                placeholder="Enter donation amount in ETH"
+                placeholder="Entrez montant donation"
                 mb={4}
             />
-            <Button onClick={handleDonate} disabled={address && !address.connected}>Donate</Button>
+            <Button onClick={handleDonate} disabled={address && !address.connected}>Donner</Button>
             {transactionStatus && (
                 <Text mt={4}>{transactionStatus}</Text>
             )}
