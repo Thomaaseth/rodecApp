@@ -13,40 +13,56 @@ import {
 } from '../contracts/donateContract';
 
 function AdminPage() {
+    console.log('Rendering admin page');
+
+
     const [isAdmin, setIsAdmin] = useState(false);
     const [contractBalance, setContractBalance] = useState('0');
     const [newMinDonationLimit, setNewMinDonationLimit] = useState('');
-    const { address } = useAccount();
+    const [isLoading, setIsLoading] = useState(true);
+    const { address, isConnected } = useAccount();
+    console.log('Current contractBalance:', contractBalance);  // <--- Add this log
 
 
     useEffect(() => {
         const checkAdminStatus = async () => {
+            setIsLoading(true);
             try {
-                if (address && address.connected) {
-                    const provider = new ethers.BrowserProvider(address.provider);
-                    const contractWithSigner = getContractInstanceWithSigner(provider);
+                console.log("Address connected: ", address);
 
-                    const adminStatus = await isOwner(contractWithSigner, address.address);
+                if (isConnected && address) {
+                    const provider = new ethers.BrowserProvider(window.ethereum);
+                    const signer = await provider.getSigner();
+                    const contractWithSigner = getContractInstanceWithSigner(provider, signer);
+
+                    const adminStatus = await isOwner(contractWithSigner, address);
                     setIsAdmin(adminStatus);
                     if (adminStatus) {
                         const balance = await getBalance(contractWithSigner);
+                        console.log('Retrieved balance:', balance);
+
                         setContractBalance(ethers.formatEther(balance));
+                        console.log('Updated contractBalance state:', contractBalance);
                     }
                 }
             } catch (error) {
                 console.error("Error while checking admin status:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         checkAdminStatus();
-    }, [address?.connected, address]);
+    }, [isConnected, address]);
 
 
 
     const handleWithdraw = async () => {
         if (isAdmin) {
-            const provider = new ethers.BrowserProvider(address.provider);
-            const contractWithSigner = getContractInstanceWithSigner(provider);
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+
+            const contractWithSigner = getContractInstanceWithSigner(provider, signer);
 
             try {
                 const tx = await withdraw(contractWithSigner);
@@ -61,8 +77,9 @@ function AdminPage() {
 
     const handleChangeMinDonation = async () => {
         if (isAdmin) {
-            const provider = new ethers.BrowserProvider(address.provider);
-            const contractWithSigner = getContractInstanceWithSigner(provider);
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const contractWithSigner = getContractInstanceWithSigner(provider, signer);
             await setPrice(contractWithSigner, newMinDonationLimit);
         }
     };
@@ -70,34 +87,43 @@ function AdminPage() {
     return (
         <Box p={4}>
             <Text fontSize="xl">Admin Page</Text>
-            {address && !address.connected ? (
-                <Alert status="warning" mt={4}>
+            {isLoading ? (
+                <Alert status="info" mt={4}>
                     <AlertIcon />
-                    Connectez vous au bon network.
+                    Loading...
                 </Alert>
-            ) : null}
-            {!isAdmin ? (
-                <Alert status="warning" mt={4}>
-                    <AlertIcon />
-                    Seul l'owner du contract peut interagir.
-                </Alert>
-            ) : null}
-            <Text fontSize="md">Contract Balance: {contractBalance} ETH</Text>
-            <Button mt={4} onClick={handleWithdraw} disabled={!address?.connected || !isAdmin}>
-                Retirer les fonds.
-            </Button>
-            <Box mt={4}>
-                <Text fontSize="md">Changer le minimum de donation en ETH</Text>
-                <Input
-                    value={newMinDonationLimit}
-                    onChange={(e) => setNewMinDonationLimit(e.target.value)}
-                    placeholder="Entrez nouveau minimum de donation"
-                    mb={2}
-                />
-                <Button onClick={handleChangeMinDonation} disabled={!address?.connected || !isAdmin}>
-                    Valider
-                </Button>
-            </Box>
+            ) : (
+                <>
+                    {!isConnected ? (
+                        <Alert status="warning" mt={4}>
+                            <AlertIcon />
+                            Connectez vous au bon network.
+                        </Alert>
+                    ) : null}
+                    {!isAdmin ? (
+                        <Alert status="warning" mt={4}>
+                            <AlertIcon />
+                            Seul l'owner du contract peut interagir avec cette Page.
+                        </Alert>
+                    ) : null}
+                    <Text fontSize="md">Contract Balance: {console.log('Rendering contractBalance:', contractBalance)} {contractBalance} ETH</Text>
+                    <Button mt={4} onClick={handleWithdraw} disabled={!isConnected || !isAdmin}>
+                        Retirer les fonds.
+                    </Button>
+                    <Box mt={4}>
+                        <Text fontSize="md">Changer le minimum de donation en ETH</Text>
+                        <Input
+                            value={newMinDonationLimit}
+                            onChange={(e) => setNewMinDonationLimit(e.target.value)}
+                            placeholder="Entrez nouveau minimum de donation"
+                            mb={2}
+                        />
+                        <Button onClick={handleChangeMinDonation} disabled={!isConnected || !isAdmin}>
+                            Valider
+                        </Button>
+                    </Box>
+                </>
+            )}
         </Box>
     );
 }

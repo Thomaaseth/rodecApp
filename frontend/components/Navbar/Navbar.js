@@ -9,22 +9,25 @@ import { useEffect, useState } from 'react';
 
 const Navbar = () => {
 
-    const { address } = useAccount();
+    const { isConnected, address } = useAccount();
     const [isOwnerAccount, setIsOwnerAccount] = useState(false);
 
     useEffect(() => {
         const checkOwner = async () => {
-            if (address && address.connected) {
-                console.log(address.provider);
+            console.log("Address: ", address);
 
-                const provider = new ethers.BrowserProvider(address.provider);
-                const contractWithSigner = getContractInstanceWithSigner(provider);
-                const ownerStatus = await isOwner(contractWithSigner);
+            if (isConnected && address) {
+
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const signer = await provider.getSigner();
+                const contractWithSigner = getContractInstanceWithSigner(provider, signer);
+
+                const ownerStatus = await isOwner(contractWithSigner, address);
                 setIsOwnerAccount(ownerStatus);
             }
         }
         checkOwner();
-    }, [address]);
+    }, [address, isConnected]);
 
     return (
         <Box bg="teal.500" px={4} color="white" width="100%">

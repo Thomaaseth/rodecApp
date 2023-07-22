@@ -66,7 +66,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable {
     /**
      * @dev Returns the current donation price
      */
-    function getPrice() public view returns (uint256) {
+    function getPrice() external view returns (uint256) {
         return _price;
     }
 
@@ -89,7 +89,7 @@ contract Donate is ERC721, ERC721Enumerable, Ownable {
      */
     function getDonationDetails(
         uint256 donationId
-    ) public view returns (uint256, uint256) {
+    ) external view returns (uint256, uint256) {
         require(donationExists[donationId], "Donation does not exist");
         Donation memory donation = donations[donationId];
         return (donation.amount, donation.timestamp);
@@ -100,13 +100,20 @@ contract Donate is ERC721, ERC721Enumerable, Ownable {
      */
     function walletOfOwner(
         address _owner
-    ) public view returns (uint256[] memory) {
+    ) external view returns (uint256[] memory) {
         uint256 donationCount = balanceOf(_owner);
         uint256[] memory donationsId = new uint256[](donationCount);
         for (uint256 i; i < donationCount; i++) {
             donationsId[i] = tokenOfOwnerByIndex(_owner, i);
         }
         return donationsId;
+    }
+
+    /**
+     * @dev Returns the balance of the contract
+     */
+    function getContractBalance() external view returns (uint256) {
+        return address(this).balance;
     }
 
     /**

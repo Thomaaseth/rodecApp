@@ -31,7 +31,8 @@ export async function listenForNewDonations(donateContract) {
 
 export async function getBalance(donateContract) {
     try {
-        const balance = await donateContract.balance();
+        const balance = await donateContract.getContractBalance();
+        // return ethers.formatEther(balance);
         return balance;
     } catch (err) {
         console.log('Error in getBalance function:', err);
@@ -42,7 +43,11 @@ export async function getBalance(donateContract) {
 
 export async function makeDonation(donateContractWithSigner, amount) {
     try {
+        console.log('Preparing to donate...');
+
         const tx = await donateContractWithSigner.donate({ value: ethers.parseEther(amount) });
+        console.log('Donation made, waiting for receipt...');
+
         const receipt = await tx.wait();
         console.log('Transaction receipt: ', receipt);
         return receipt;
@@ -51,6 +56,7 @@ export async function makeDonation(donateContractWithSigner, amount) {
         throw err;
     }
 }
+
 
 export async function getPrice(donateContract) {
     try {
@@ -88,15 +94,21 @@ export async function getDonationDetails(donateContract, donationId) {
         return donateInfo;
     } catch (err) {
         console.log('Error in getting donation info', err);
+        return {};
     }
 }
 
 export async function getDonationsOwner(donateContract, ownerAddress) {
+    console.log(`getDonationsOwner called with ownerAddress: ${ownerAddress}`);  // Log the owner address before calling walletOfOwner
+
     try {
         const donationsInfo = await donateContract.walletOfOwner(ownerAddress);
+        console.log(`Returned donations for ownerAddress ${ownerAddress}:`, donationsInfo);  // Log the returned donations
+
         return donationsInfo;
     } catch (err) {
         console.log('Error in retrieve donations for a wallet', err);
+        return [];
     }
 }
 
