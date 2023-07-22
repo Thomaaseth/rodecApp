@@ -73,26 +73,27 @@ describe("Donate unit tests", function () {
       expect(donationIds).to.deep.equal([0, 1]);
     });
 
-
-
-
     it("Should not allow token transfers", async function () {
       await donate.setPrice(100);
       await donate.connect(addr1).donate({ value: 100 });
       await expect(donate.connect(addr1).transferFrom(addr1.address, addr2.address, 0)).to.be.revertedWith("Transfer not allowed");
     });
 
-    it("Should allow the owner to withdraw", async function () {
-      await donate.setPrice(100);
-      await donate.connect(addr1).donate({ value: 100 });
-      await donate.withdraw();
-      // You might need to add a check here, depending on the exact behavior of your withdrawal function
-    });
 
-    it("Should not allow non-owners to withdraw", async function () {
-      await donate.setPrice(100);
-      await donate.connect(addr1).donate({ value: 100 });
-      await expect(donate.connect(addr1).withdraw()).to.be.revertedWith("Ownable: caller is not the owner");
+    /// Test withdraw feature
+    describe("Withdraw", function () {
+
+      it("Should allow the owner to withdraw", async function () {
+        await donate.setPrice(100);
+        await donate.connect(addr1).donate({ value: 100 });
+        await donate.withdraw();
+      });
+
+      it("Should not allow non-owners to withdraw", async function () {
+        await donate.setPrice(100);
+        await donate.connect(addr1).donate({ value: 100 });
+        await expect(donate.connect(addr1).withdraw()).to.be.revertedWith("Ownable: caller is not the owner");
+      });
     });
   });
-});
+})

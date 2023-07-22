@@ -7,7 +7,6 @@ import { useAccount } from 'wagmi';
 import { getDonationsOwner, getDonationDetails, getContractInstance, getContractInstanceWithSigner } from '../contracts/donateContract'
 
 function MyProfilePage() {
-    console.log('Rendering MyProfilePage');
 
     const [donations, setDonations] = useState([]);
     const [totalDonated, setTotalDonated] = useState(0);
@@ -25,7 +24,6 @@ function MyProfilePage() {
             const signer = await provider.getSigner();
             const contractInstance = getContractInstanceWithSigner(provider, signer);
             const donationIds = await getDonationsOwner(contractInstance, address);
-            console.log("Donation id:", donationIds);
 
             let userDonations = [];
             let total = 0n;
@@ -82,12 +80,7 @@ function MyProfilePage() {
     }
 
     useEffect(() => {
-        console.log('Running useEffect in MyProfilePage');
-        console.log('isConnected:', isConnected, 'account:', address);
-
         if (isConnected) {
-            console.log("useEffect called. isConnected:", isConnected, "account:", address);
-
             fetchDonations();
         }
     }, [isConnected, address]);

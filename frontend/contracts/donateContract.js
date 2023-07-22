@@ -99,11 +99,11 @@ export async function getDonationDetails(donateContract, donationId) {
 }
 
 export async function getDonationsOwner(donateContract, ownerAddress) {
-    console.log(`getDonationsOwner called with ownerAddress: ${ownerAddress}`);  // Log the owner address before calling walletOfOwner
+    console.log(`getDonationsOwner called with ownerAddress: ${ownerAddress}`);
 
     try {
         const donationsInfo = await donateContract.walletOfOwner(ownerAddress);
-        console.log(`Returned donations for ownerAddress ${ownerAddress}:`, donationsInfo);  // Log the returned donations
+        console.log(`Returned donations for ownerAddress ${ownerAddress}:`, donationsInfo);
 
         return donationsInfo;
     } catch (err) {

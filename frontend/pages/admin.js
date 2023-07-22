@@ -21,15 +21,11 @@ function AdminPage() {
     const [newMinDonationLimit, setNewMinDonationLimit] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const { address, isConnected } = useAccount();
-    console.log('Current contractBalance:', contractBalance);  // <--- Add this log
-
 
     useEffect(() => {
         const checkAdminStatus = async () => {
             setIsLoading(true);
             try {
-                console.log("Address connected: ", address);
-
                 if (isConnected && address) {
                     const provider = new ethers.BrowserProvider(window.ethereum);
                     const signer = await provider.getSigner();
@@ -39,10 +35,7 @@ function AdminPage() {
                     setIsAdmin(adminStatus);
                     if (adminStatus) {
                         const balance = await getBalance(contractWithSigner);
-                        console.log('Retrieved balance:', balance);
-
                         setContractBalance(ethers.formatEther(balance));
-                        console.log('Updated contractBalance state:', contractBalance);
                     }
                 }
             } catch (error) {
@@ -66,7 +59,6 @@ function AdminPage() {
 
             try {
                 const tx = await withdraw(contractWithSigner);
-                console.log('Transaction successful. Hash:', tx.hash);
                 const balance = await getBalance(contractWithSigner);
                 setContractBalance(ethers.formatEther(balance));
             } catch (err) {
@@ -108,7 +100,7 @@ function AdminPage() {
                     ) : null}
                     <Text fontSize="md">Contract Balance: {console.log('Rendering contractBalance:', contractBalance)} {contractBalance} ETH</Text>
                     <Button mt={4} onClick={handleWithdraw} disabled={!isConnected || !isAdmin}>
-                        Retirer les fonds.
+                        Retirer les fonds
                     </Button>
                     <Box mt={4}>
                         <Text fontSize="md">Changer le minimum de donation en ETH</Text>

@@ -14,8 +14,6 @@ const Navbar = () => {
 
     useEffect(() => {
         const checkOwner = async () => {
-            console.log("Address: ", address);
-
             if (isConnected && address) {
 
                 const provider = new ethers.BrowserProvider(window.ethereum);
