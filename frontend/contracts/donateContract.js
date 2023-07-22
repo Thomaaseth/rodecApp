@@ -4,8 +4,8 @@ import { ethers } from 'ethers';
 import donateData from './donate.json';
 
 
-export const contractABI = donateData.contracts.Donate.abi;
-export const contractAddress = donateData.contracts.Donate.address;
+export const contractABI = donateData.abi;
+export const contractAddress = donateData.address;
 
 export function getContractInstance(ethersProvider) {
     return new ethers.Contract(contractAddress, contractABI, ethersProvider);
