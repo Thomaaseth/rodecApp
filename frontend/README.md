@@ -1,34 +1,49 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# RodecApp
 
-First, run the development server:
+RodecApp is a decentralized application (DApp) built on the Ethereum blockchain that allows users to donate funds to a cause and receive ERC721 tokens in return. The application is built with Solidity, React (Next.js), ethers.js, and uses the Alchemy API to interact with the Ethereum network.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Blockchain Integration**: RodecApp uses the Ethereum blockchain to process and validate donations. The transparency of the blockchain ensures that all donations are publicly auditable.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+2. **Donation and Token Exchange**: Users can donate funds and receive unique ERC721 tokens in return. Each donation is tied to a specific ERC721 token that serves as a certificate for proof of donation. These tokens are non-transferable, reinforcing the concept that donations should not be a tradable commodity.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. **Donation Tracking**: Users can view their donation history, including details (i.e. amount, date) about the ERC721 tokens they have received, at any time, thanks to the immutability of the blockchain.
 
-## Learn More
+4. **Admin Capabilities**: Admins have the ability to withdraw funds collected from the donations and change the donation prices.
 
-To learn more about Next.js, take a look at the following resources:
+## Installation & Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Follow these steps to install and deploy RodecApp.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+1. Node.js and npm/yarn installed on your local machine.
+2. Alchemy API key.
+3. Metamask browser extension installed and set up.
+4. GitHub account.
+5. Vercel account.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Local Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repository to your local machine.
+2. Install the dependencies using `yarn install` or `npm install`.
+3. Create a `.env` file in your root directory and add the following variables:
+- API_URL=<Your Alchemy or Infura API URL>
+- MNEMONIC=<Your Ethereum wallet secret phrase>
+4. Start the local development server using `yarn dev` or `npm run dev`.
+
+### Deployment on Vercel
+
+1. Push your local codebase to a GitHub repository.
+2. Log into your Vercel account and click on "Import Project".
+3. Import the GitHub repository you just pushed to.
+4. Deploy the project.
+
+After the successful deployment, you will receive a unique URL to access your deployed application.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
