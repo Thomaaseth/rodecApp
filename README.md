@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Lien app: https://rodec-two.vercel.app/
+
 # RodecApp
 
 RodecApp is a decentralized application (DApp) built on the Ethereum blockchain that allows users to donate funds to a cause and receive ERC721 tokens in return. The application is built with Solidity, React (Next.js), ethers.js, and uses the Alchemy API to interact with the Ethereum network.
