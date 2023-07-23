@@ -30,7 +30,7 @@ Follow these steps to install and deploy RodecApp.
 
 1. Clone the repository to your local machine.
 2. Install the dependencies using `yarn install` or `npm install`.
-3. Create a `.env` file in your root directory and add the following variables:
+3. Create a `.env` file in your backend directory and add the following variables:
 - API_URL= "Your Alchemy or Infura API URL"
 - MNEMONIC= "Your Ethereum wallet secret phrase"
 4. Start the local development server using `yarn dev` or `npm run dev`.
