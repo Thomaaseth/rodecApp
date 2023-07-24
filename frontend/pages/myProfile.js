@@ -105,10 +105,11 @@ function MyProfilePage() {
                 selectedDonation && (
                     <>
                         <Text>Amount: {ethers.formatEther(selectedDonation.amount.toString())} ETH</Text>
-                        <Text>Timestamp: {new Date(Number(selectedDonation.timestamp.toString()) * 1000).toLocaleString()}</Text>                </>
+                        <Text>Timestamp: {new Date(Number(selectedDonation.timestamp.toString()) * 1000).toLocaleString()}</Text>
+                    </>
                 )
             }
-            <Text>Somme totale des donations: {totalDonated} ETH</Text>
+            <Text>Somme totale de mes donations: {totalDonated} ETH</Text>
             <SimpleGrid columns={3} spacing={10}>
                 {donations.map((donation, index) => (
                     <Box key={index} borderWidth="1px" borderRadius="lg" overflow="hidden">

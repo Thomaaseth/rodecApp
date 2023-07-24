@@ -28,10 +28,12 @@ const Navbar = () => {
     }, [address, isConnected]);
 
     return (
-        <Box bg="teal.500" px={4} color="white" width="100%">
+        <Box bg="yellow.400" px={4} color="black" width="100%">
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                 <Flex>
-                    <Text fontSize="lg" fontWeight="bold">RoDec</Text>
+                    <NextLink href="/">
+                        <Link fontWeight="bold" fontSize="lg">RoDec</Link>
+                    </NextLink>
                     <Stack direction={'row'} spacing={4} marginLeft={4}>
                         <NextLink href="/actions">
                             <Link fontWeight="bold" fontSize="lg">Nos actions</Link>
