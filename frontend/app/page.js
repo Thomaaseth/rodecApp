@@ -19,7 +19,7 @@ export default function Home() {
         </Text>
       </Box>
       <Link href="/donate">
-        <Button bg="yellow.400" color="black " size="lg">
+        <Button bg="yellow.400" color="black" size="lg">
           Faites un don aujourd'hui et aidez-nous à construire un avenir meilleur !
         </Button>
       </Link>
